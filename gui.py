@@ -1,5 +1,8 @@
 import PySimpleGUI as psg
 import functions
+import time
+
+clock = psg.Text("", key="clock")
 
 inputLabel = psg.Text("Enter A Todo")
 todoInputBox = psg.InputText("",key="todoInputBox", tooltip="Enter a Todo")
@@ -17,14 +20,14 @@ todosList = psg.Listbox(size=(45,10), values=functions.getTodos(),
 
 window = psg.Window("Todo App",
                     layout=
-                    [[inputLabel],
+                    [[clock],
+                     [inputLabel],
                      [todoInputBox],
                      [todosList,addTodoButton,editTodoButton, completeTodoButton],
                      [exitButton]])
 while True:
-    event, values = window.read()
-    print(event)
-    print(values)
+    event, values = window.read(timeout=1000)
+    window["clock"].update(value=time.strftime("%b, %d, %Y %H:%M:%S"))
     match event:
         case "addTodoButton":
             todos = functions.getTodos()
